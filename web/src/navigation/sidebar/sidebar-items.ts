@@ -16,6 +16,7 @@ import {
   Gauge,
   GraduationCap,
   type LucideIcon,
+  Bot,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -48,6 +49,11 @@ export const sidebarItems: NavGroup[] = [
     id: 1,
     label: "Dashboards",
     items: [
+      {
+        title: "Chatbot",
+        url: "/dashboard/chatbot",
+        icon: Bot,
+      },
       {
         title: "Default",
         url: "/dashboard/default",
