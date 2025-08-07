@@ -18,14 +18,10 @@ const compat = new FlatCompat({
 export default [
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
   { ignores: [".github/", ".husky/", "node_modules/", ".next/", "src/components/ui", "*.config.ts", "*.mjs"] },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  securityPlugin.configs.recommended,
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     languageOptions: {
       globals: globals.browser,
+      parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",
       },
@@ -36,15 +32,20 @@ export default [
       },
     },
     plugins: {
-      "@next/next": nextPlugin,
       import: pluginImport,
       security: securityPlugin,
       prettier: prettier,
       unicorn: unicorn,
       react: pluginReact,
       sonarjs: sonarjs,
+      next: nextPlugin,
     },
   },
+  pluginJs.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  securityPlugin.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...compat.extends("next/core-web-vitals", "next/typescript", "next"),
   {
     rules: {
       // Prettier integration rules
