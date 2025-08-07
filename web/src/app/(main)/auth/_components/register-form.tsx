@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
+import useSupabaseBrowser from "@/lib/supabase/client";
 
 const FormSchema = z
   .object({
@@ -37,7 +37,7 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    const supabase = createClient();
+    const supabase = useSupabaseBrowser();
     setIsLoading(true);
     const { email, password } = data;
 
