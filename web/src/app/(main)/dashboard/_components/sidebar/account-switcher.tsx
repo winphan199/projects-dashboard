@@ -14,8 +14,8 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { cn, getInitials } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import useSupabaseBrowser from "@/lib/supabase/client";
 
 export function AccountSwitcher({
   users,
@@ -35,7 +35,7 @@ export function AccountSwitcher({
   const logout = async () => {
     console.log("logging out");
 
-    const supabase = createClient();
+    const supabase = useSupabaseBrowser();
     await supabase.auth.signOut();
     router.push("/auth/login");
   };
