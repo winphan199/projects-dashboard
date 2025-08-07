@@ -1,7 +1,9 @@
 "use client";
 import { createContext, useContext } from "react";
-import { Tables } from "../../../database.types";
+
 import { useQuery } from "@tanstack/react-query";
+
+import { Tables } from "../../../database.types";
 
 export const AccountContext = createContext<Tables<"accounts"> | null>(null);
 
@@ -24,7 +26,7 @@ const AccountProvider = (props: React.PropsWithChildren) => {
     return null; // or a loading state
   }
 
-  return <AccountContext.Provider value={data || null}>{props.children}</AccountContext.Provider>;
+  return <AccountContext.Provider value={data ?? null}>{props.children}</AccountContext.Provider>;
 };
 
 export default AccountProvider;

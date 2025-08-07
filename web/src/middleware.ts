@@ -2,8 +2,8 @@
 // To re-enable, rename this file to `middleware.ts`.
 import { NextRequest, NextResponse } from "next/server";
 
-import { authMiddleware } from "./middleware/auth-middleware";
 import { updateSession } from "./lib/supabase/middleware";
+import { authMiddleware } from "./middleware/auth-middleware";
 
 export async function middleware(request: NextRequest) {
   // // authMiddleware

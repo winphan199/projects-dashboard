@@ -2,6 +2,7 @@
 
 import { Settings, CircleHelp, Search, Database, ClipboardList, File, Command } from "lucide-react";
 
+import { useAccount } from "@/app/contexts/account-provider";
 import {
   Sidebar,
   SidebarContent,
@@ -16,7 +17,6 @@ import { sidebarItems } from "@/navigation/sidebar/sidebar-items";
 
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import { useAccount } from "@/app/contexts/account-provider";
 
 const data = {
   navSecondary: [
@@ -79,9 +79,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <NavUser
           user={{
-            name: account?.name || "Unknown",
-            email: account?.email || "",
-            avatar: account?.picture_url || "",
+            name: account?.name ?? "Unknown",
+            email: account?.email ?? "",
+            avatar: account?.picture_url ?? "",
           }}
         />
       </SidebarFooter>

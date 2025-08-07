@@ -1,5 +1,6 @@
-import { getAccount } from "@/server/data/account-data";
 import { NextRequest } from "next/server";
+
+import { getAccount } from "@/server/data/account-data";
 
 export async function GET() {
   try {

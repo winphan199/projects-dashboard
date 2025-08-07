@@ -1,7 +1,8 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import AppSidebar from "./_components/app-sidebar";
-import AIModelSelector from "./_components/ai-model-selector";
 import { getAccount } from "@/server/data/account-data";
+
+import AIModelSelector from "./_components/ai-model-selector";
+import AppSidebar from "./_components/app-sidebar";
 
 async function ChatbotPage() {
   // const user = await getAccount();

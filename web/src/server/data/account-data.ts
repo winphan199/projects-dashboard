@@ -1,4 +1,5 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+
 import { Tables } from "../../../database.types";
 
 export async function getAccount(): Promise<Tables<"accounts">> {

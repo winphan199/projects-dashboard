@@ -38,14 +38,13 @@ export default [
       unicorn: unicorn,
       react: pluginReact,
       sonarjs: sonarjs,
-      next: nextPlugin,
     },
   },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
   securityPlugin.configs.recommended,
   ...tseslint.configs.recommended,
-  ...compat.extends("next/core-web-vitals", "next/typescript", "next"),
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
       // Prettier integration rules
@@ -156,6 +155,15 @@ export default [
 
       // SonarJS: Detect commented-out code
       "sonarjs/no-commented-code": "warn",
+    },
+  },
+
+  {
+    plugins: {
+      "@next/next": nextPlugin,
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
     },
   },
 ];

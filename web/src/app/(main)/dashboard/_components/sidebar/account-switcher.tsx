@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { BadgeCheck, Bell, CreditCard, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,9 +15,8 @@ import {
   DropdownMenuTrigger,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
-import { cn, getInitials } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import useSupabaseBrowser from "@/lib/supabase/client";
+import { cn, getInitials } from "@/lib/utils";
 
 export function AccountSwitcher({
   users,
@@ -31,11 +32,9 @@ export function AccountSwitcher({
   const router = useRouter();
 
   const [activeUser, setActiveUser] = useState(users[0]);
+  const supabase = useSupabaseBrowser();
 
   const logout = async () => {
-    console.log("logging out");
-
-    const supabase = useSupabaseBrowser();
     await supabase.auth.signOut();
     router.push("/auth/login");
   };

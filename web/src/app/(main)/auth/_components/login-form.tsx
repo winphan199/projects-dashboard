@@ -1,5 +1,9 @@
 "use client";
 
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -10,8 +14,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useSupabaseBrowser from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -21,6 +23,7 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const supabase = useSupabaseBrowser();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -35,7 +38,6 @@ export function LoginForm() {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
 
-    const supabase = useSupabaseBrowser();
     const { email, password } = data;
     try {
       const { error } = await supabase.auth.signInWithPassword({

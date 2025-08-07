@@ -1,7 +1,8 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
 import { useState } from "react";
+
+import { useChat } from "@ai-sdk/react";
 
 export default function ChatWrapper() {
   const [input, setInput] = useState("");
