@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { getInitials } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-
+import useSupabaseBrowser from "@/lib/supabase/client";
 export function NavUser({
   user,
 }: {
@@ -26,12 +25,12 @@ export function NavUser({
     readonly avatar: string;
   };
 }) {
+  const supabase = useSupabaseBrowser();
   const router = useRouter();
   const { isMobile } = useSidebar();
   const logout = async () => {
     console.log("logging out");
 
-    const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/auth/login");
   };

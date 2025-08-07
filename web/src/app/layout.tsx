@@ -10,6 +10,7 @@ import { PreferencesStoreProvider } from "@/stores/preferences/preferences-provi
 import { THEME_MODE_VALUES, THEME_PRESET_VALUES, type ThemePreset, type ThemeMode } from "@/types/preferences/theme";
 
 import "./globals.css";
+import { ReactQueryClientProvider } from "./contexts/react-query-client-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,18 +24,20 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const themePreset = await getPreference<ThemePreset>("theme_preset", THEME_PRESET_VALUES, "default");
 
   return (
-    <html
-      lang="en"
-      className={themeMode === "dark" ? "dark" : ""}
-      data-theme-preset={themePreset}
-      suppressHydrationWarning
-    >
-      <body className={`${inter.className} min-h-screen antialiased`}>
-        <PreferencesStoreProvider themeMode={themeMode} themePreset={themePreset}>
-          {children}
-          <Toaster />
-        </PreferencesStoreProvider>
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html
+        lang="en"
+        className={themeMode === "dark" ? "dark" : ""}
+        data-theme-preset={themePreset}
+        suppressHydrationWarning
+      >
+        <body className={`${inter.className} min-h-screen antialiased`}>
+          <PreferencesStoreProvider themeMode={themeMode} themePreset={themePreset}>
+            {children}
+            <Toaster />
+          </PreferencesStoreProvider>
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { APP_CONFIG } from "@/config/app-config";
 import { rootUser } from "@/data/users";
@@ -17,6 +18,7 @@ import { sidebarItems } from "@/navigation/sidebar/sidebar-items";
 
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
+import { useAccount } from "@/app/contexts/account-provider";
 
 const data = {
   navSecondary: [
@@ -56,6 +58,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const account = useAccount();
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -76,7 +79,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={rootUser} />
+        <NavUser
+          user={{
+            name: account?.name || "Unknown",
+            email: account?.email || "",
+            avatar: account?.picture_url || "",
+          }}
+        />
       </SidebarFooter>
     </Sidebar>
   );
