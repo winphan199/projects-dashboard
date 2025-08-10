@@ -21,7 +21,7 @@ import { NavUser } from "./nav-user";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const account = useAccount();
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} variant="sidebar">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
