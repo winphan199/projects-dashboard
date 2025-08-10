@@ -31,7 +31,7 @@ export function AccountSwitcher({
 }) {
   const router = useRouter();
 
-  const [activeUser, setActiveUser] = useState(users[0]);
+  const [activeUser, setActiveUser] = useState(users[0]!);
   const supabase = useSupabaseBrowser();
 
   const logout = async () => {
