@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   SelectContent,
@@ -7,25 +9,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useContext, useState } from "react";
+import { anthropicModels } from "../_lib/ai-models";
+import { AIChatbotContext } from "../_lib/contexts/ai-chatbot-provider";
 
 function AIModelSelector() {
+  const { selectedModel, setSelectedModel } = useContext(AIChatbotContext);
+
   return (
-    <Select>
+    <Select value={selectedModel} onValueChange={setSelectedModel}>
       <SelectTrigger className="w-[180px] px-2 py-0 text-xs" size="sm">
         <SelectValue placeholder="Model" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel className="text-xs">AI Models</SelectLabel>
-          <SelectItem value="gpt-3.5-turbo" className="text-xs">
-            GPT-3.5 Turbo
-          </SelectItem>
-          <SelectItem value="gpt-4" className="text-xs">
-            GPT-4
-          </SelectItem>
-          <SelectItem value="gpt-4-32k" className="text-xs">
-            GPT-4 32k
-          </SelectItem>
+          {anthropicModels.map((model) => (
+            <SelectItem key={model.id} value={model.value} className="text-xs">
+              {model.label}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

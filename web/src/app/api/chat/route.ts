@@ -6,10 +6,10 @@ import { anthropic } from "@ai-sdk/anthropic";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const { messages, model }: { messages: UIMessage[]; model: string } = await req.json();
 
   const result = streamText({
-    model: anthropic("claude-3-haiku-20240307"),
+    model: anthropic(model ?? "claude-3-haiku-20240307"),
     messages: convertToModelMessages(messages),
   });
 

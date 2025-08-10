@@ -1,11 +1,8 @@
-import { NextRequest } from "next/server";
-
 import { getAccount } from "@/server/data/account-data";
 
 export async function GET() {
   try {
     const account = await getAccount();
-    console.log("Fetched account data:", account);
 
     return new Response(JSON.stringify(account), {
       status: 200,

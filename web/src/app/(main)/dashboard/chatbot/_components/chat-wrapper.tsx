@@ -1,17 +1,18 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { UIMessage, useChat } from "@ai-sdk/react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Loader, LoaderPinwheel, Send } from "lucide-react";
 import UserChatBubble from "./user-chat-bubble";
 import AIChatBubble from "./ai-chat-bubble";
 import useSupabaseBrowser from "@/lib/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { useAccount } from "@/app/contexts/account-provider";
 import { useRouter } from "next/navigation";
+import { AIChatbotContext } from "../_lib/contexts/ai-chatbot-provider";
 
 interface ChatWrapperProps {
   defaultChatId?: string;
@@ -23,9 +24,10 @@ export default function ChatWrapper({ defaultChatId, defaultMessages }: ChatWrap
   const supabase = useSupabaseBrowser();
   const router = useRouter();
 
+  const { selectedModel } = useContext(AIChatbotContext);
   const [chatId] = useState<string>(defaultChatId ?? uuidv4());
   const [input, setInput] = useState("");
-  const { messages, sendMessage } = useChat({
+  const { messages, sendMessage, status } = useChat({
     id: chatId,
     messages: defaultMessages,
     onFinish: async ({ message }) => {
@@ -56,7 +58,14 @@ export default function ChatWrapper({ defaultChatId, defaultMessages }: ChatWrap
       await startNewChat(input);
     }
     await saveMessage(chatId, "user", input);
-    await sendMessage({ text: input });
+    await sendMessage(
+      { text: input },
+      {
+        body: {
+          model: selectedModel,
+        },
+      },
+    );
     setInput("");
   };
 
@@ -92,6 +101,7 @@ export default function ChatWrapper({ defaultChatId, defaultMessages }: ChatWrap
           id: chatId,
           user_id: account.id,
           title: input || "New Chat",
+          model: selectedModel,
         },
       ]);
       if (chatError) throw chatError;
@@ -112,6 +122,11 @@ export default function ChatWrapper({ defaultChatId, defaultMessages }: ChatWrap
           </React.Fragment>
         );
       })}
+      {status === "submitted" && (
+        <div className="my-4 flex justify-center">
+          <LoaderPinwheel className="h-6 w-6 animate-spin text-slate-500" />
+        </div>
+      )}
 
       <form
         onSubmit={async (e) => {

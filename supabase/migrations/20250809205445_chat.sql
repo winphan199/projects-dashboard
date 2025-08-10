@@ -3,7 +3,8 @@ CREATE TABLE chats (
   id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id uuid REFERENCES auth.users (id) ON DELETE CASCADE,
   title text,
-  created_at timestamp with time zone DEFAULT now() NOT NULL
+  created_at timestamp with time zone DEFAULT now() NOT NULL,
+  model text NOT NULL
 );
 
 -- Create the `messages` table
