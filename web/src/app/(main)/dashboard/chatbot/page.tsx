@@ -1,19 +1,16 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { getAccount } from "@/server/data/account-data";
 
 import AIModelSelector from "./_components/ai-model-selector";
 import AppSidebar from "./_components/app-sidebar";
+import ChatWrapper from "./_components/chat-wrapper";
 
 async function ChatbotPage() {
-  // const user = await getAccount();
-  // console.log("user", user);
-
   return (
-    <div className="flex h-full flex-1 flex-col overflow-auto px-4 md:px-6">
+    <div className="flex h-full flex-1 flex-col overflow-auto">
       <SidebarProvider>
         <AppSidebar />
-        <div className="w-full">
-          <header className="flex w-full items-center justify-between py-2">
+        <div className="flex w-full flex-col">
+          <header className="flex w-full items-center justify-between px-4 py-4 md:px-6">
             <div className="flex items-center">
               <SidebarTrigger />
               <span className="mr-1 text-zinc-400">|</span>
@@ -21,8 +18,8 @@ async function ChatbotPage() {
             </div>
             <AIModelSelector />
           </header>
-          <main>
-            <div className="h-[3000px]">some page</div>
+          <main className="flex flex-1 flex-col items-center overflow-auto">
+            <ChatWrapper />
           </main>
         </div>
       </SidebarProvider>

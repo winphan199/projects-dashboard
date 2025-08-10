@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Plus, Search, Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -6,55 +6,41 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+import ChatSidebarMenuButton from "./sidebar-menu-btn";
 
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+async function AppSidebar() {
+  const supabase = getSupabaseServerClient();
+  const { data, error } = await supabase.from("chats").select("*");
+  if (error || !data) return null;
 
-function AppSidebar() {
+  const chats = data;
+
   return (
     <Sidebar variant="floating" className="absolute">
+      <SidebarHeader className="pt-8">
+        <Button asChild>
+          <Link href="/dashboard/chatbot">
+            <Plus />
+            Create new chat
+          </Link>
+        </Button>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Recent</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+              {chats.map((chat) => (
+                <SidebarMenuItem key={chat.id}>
+                  <ChatSidebarMenuButton id={chat.id} title={chat.title} />
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
