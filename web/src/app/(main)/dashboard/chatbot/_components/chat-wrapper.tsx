@@ -2,17 +2,21 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 
-import { UIMessage, useChat } from "@ai-sdk/react";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Loader, LoaderPinwheel, Send } from "lucide-react";
-import UserChatBubble from "./user-chat-bubble";
-import AIChatBubble from "./ai-chat-bubble";
-import useSupabaseBrowser from "@/lib/supabase/client";
-import { v4 as uuidv4 } from "uuid";
-import { useAccount } from "@/app/contexts/account-provider";
 import { useRouter } from "next/navigation";
+
+import { UIMessage, useChat } from "@ai-sdk/react";
+import { Loader, LoaderPinwheel, Send } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
+
+import { useAccount } from "@/app/contexts/account-provider";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import useSupabaseBrowser from "@/lib/supabase/client";
+
 import { AIChatbotContext } from "../_lib/contexts/ai-chatbot-provider";
+
+import AIChatBubble from "./ai-chat-bubble";
+import UserChatBubble from "./user-chat-bubble";
 
 interface ChatWrapperProps {
   defaultChatId?: string;

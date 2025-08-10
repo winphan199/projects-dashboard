@@ -1,13 +1,15 @@
+import { notFound } from "next/navigation";
+
+import { TextUIPart, UIMessage } from "ai";
+
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getAccount } from "@/server/data/account-data";
 
+import { Tables } from "../../../../../../database.types";
 import AIModelSelector from "../_components/ai-model-selector";
 import AppSidebar from "../_components/app-sidebar";
 import ChatWrapper from "../_components/chat-wrapper";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { Tables } from "../../../../../../database.types";
-import { TextUIPart, UIMessage } from "ai";
-import { notFound } from "next/navigation";
 import AIChatbotProvider from "../_lib/contexts/ai-chatbot-provider";
 
 type params = Promise<{

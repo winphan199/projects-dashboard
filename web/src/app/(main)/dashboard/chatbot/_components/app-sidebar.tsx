@@ -1,5 +1,8 @@
-import { Calendar, Home, Inbox, Plus, Search, Settings } from "lucide-react";
+import Link from "next/link";
 
+import { PlusCircleIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -8,12 +11,10 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+
 import ChatSidebarMenuButton from "./sidebar-menu-btn";
 
 async function AppSidebar() {
@@ -28,7 +29,7 @@ async function AppSidebar() {
       <SidebarHeader className="pt-8">
         <Button asChild>
           <Link href="/dashboard/chatbot">
-            <Plus />
+            <PlusCircleIcon />
             Create new chat
           </Link>
         </Button>

@@ -51,8 +51,13 @@ LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = public
 AS $$
 BEGIN
-  INSERT INTO public.accounts (id, email)
-  VALUES (new.id, new.email);
+  INSERT INTO public.accounts (id, email, name, picture_url)
+  VALUES (
+    new.id,
+    new.email,
+    new.raw_user_meta_data ->> 'name',
+    'https://avatar.iran.liara.run/public/' || new.id
+  );
   RETURN new;
 END;
 $$;

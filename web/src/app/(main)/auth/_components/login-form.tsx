@@ -110,7 +110,7 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isLoading || !form.formState.isValid}>
           Login
         </Button>
       </form>

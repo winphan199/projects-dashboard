@@ -1,5 +1,7 @@
 "use client";
 
+import { useContext, useState } from "react";
+
 import {
   Select,
   SelectContent,
@@ -9,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useContext, useState } from "react";
+
 import { anthropicModels } from "../_lib/ai-models";
 import { AIChatbotContext } from "../_lib/contexts/ai-chatbot-provider";
 

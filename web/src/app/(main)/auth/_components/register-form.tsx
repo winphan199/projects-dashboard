@@ -16,6 +16,7 @@ import useSupabaseBrowser from "@/lib/supabase/client";
 
 const FormSchema = z
   .object({
+    fullName: z.string().min(1, { message: "Please provide your full name." }).max(100),
     email: z.string().email({ message: "Please enter a valid email address." }),
     password: z.string().min(6, { message: "Password must be at least 6 characters." }),
     confirmPassword: z.string().min(6, { message: "Confirm Password must be at least 6 characters." }),
@@ -41,7 +42,7 @@ export function RegisterForm() {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
-    const { email, password } = data;
+    const { email, password, fullName } = data;
 
     try {
       const { error } = await supabase.auth.signUp({
@@ -49,6 +50,9 @@ export function RegisterForm() {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/protected`,
+          data: {
+            name: fullName,
+          },
         },
       });
       if (error) throw error;
@@ -66,6 +70,19 @@ export function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="fullName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Full Name</FormLabel>
+              <FormControl>
+                <Input id="fullName" type="text" placeholder="John Doe" autoComplete="name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -111,7 +128,7 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isLoading || !form.formState.isValid}>
           Register
         </Button>
       </form>

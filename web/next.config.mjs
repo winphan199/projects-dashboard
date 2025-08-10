@@ -7,11 +7,11 @@ const nextConfig = {
     return [
       {
         source: "/dashboard",
-        destination: "/dashboard/default",
+        destination: "/dashboard/chatbot",
         permanent: false,
       },
     ];
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
