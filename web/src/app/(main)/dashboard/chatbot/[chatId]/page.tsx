@@ -4,7 +4,6 @@ import { TextUIPart, UIMessage } from "ai";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { getAccount } from "@/server/data/account-data";
 
 import { Tables } from "../../../../../../database.types";
 import AIModelSelector from "../_components/ai-model-selector";

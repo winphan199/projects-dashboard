@@ -1,4 +1,5 @@
 import { UIMessage } from "@ai-sdk/react";
+
 import { MemoizedMarkdown } from "./memoized-markdown";
 
 interface AIChatBubbleProps {

@@ -1,5 +1,7 @@
-import { marked } from "marked";
 import { memo, useMemo } from "react";
+
+import { marked } from "marked";
+
 import MarkdownRenderer from "./markdown-renderer";
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {

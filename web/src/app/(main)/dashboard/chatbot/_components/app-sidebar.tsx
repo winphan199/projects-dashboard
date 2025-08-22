@@ -20,7 +20,7 @@ import ChatSidebarMenuButton from "./sidebar-menu-btn";
 async function AppSidebar() {
   const supabase = getSupabaseServerClient();
   const { data, error } = await supabase.from("chats").select("*");
-  if (error || !data) return null;
+  if (error) return null;
 
   const chats = data;
 
