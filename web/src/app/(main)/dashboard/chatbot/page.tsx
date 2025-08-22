@@ -20,7 +20,7 @@ async function ChatbotPage() {
               </div>
               <AIModelSelector />
             </header>
-            <main className="flex flex-1 flex-col items-center overflow-auto">
+            <main className="relative flex flex-1 flex-col items-center overflow-auto">
               <ChatWrapper />
             </main>
           </div>

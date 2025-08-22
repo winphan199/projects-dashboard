@@ -5,11 +5,6 @@ export const anthropicModels = [
     value: "claude-3-haiku-20240307",
   },
   {
-    id: 2,
-    label: "Claude 3 Sonnet",
-    value: "claude-3-sonnet-20240229",
-  },
-  {
     id: 3,
     label: "Claude 3 Opus",
     value: "claude-3-opus-20240229",

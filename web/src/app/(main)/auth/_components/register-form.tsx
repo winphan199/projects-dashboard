@@ -38,6 +38,7 @@ export function RegisterForm() {
       password: "",
       confirmPassword: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {

@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { UIMessage, useChat } from "@ai-sdk/react";
-import { Loader, LoaderPinwheel, Send } from "lucide-react";
+import { LoaderPinwheel, Send } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAccount } from "@/app/contexts/account-provider";
@@ -117,48 +117,54 @@ export default function ChatWrapper({ defaultChatId, defaultMessages }: ChatWrap
   };
 
   return (
-    <div className="relative flex w-full max-w-[800px] flex-col gap-y-2 py-24 last:pb-40">
-      {messages.map((message) => {
-        return (
-          <React.Fragment key={message.id}>
-            {message.role === "user" ? <UserChatBubble message={message} /> : <AIChatBubble message={message} />}
-            <div ref={messagesEndRef} />
-          </React.Fragment>
-        );
-      })}
-      {status === "submitted" && (
-        <div className="my-4 flex justify-center">
-          <LoaderPinwheel className="h-6 w-6 animate-spin text-slate-500" />
+    <>
+      <div className="flex w-full flex-1 flex-col items-center overflow-auto">
+        <div className="flex w-full max-w-[800px] flex-col gap-y-2 py-24 last:pb-10">
+          {messages.map((message) => {
+            return (
+              <React.Fragment key={message.id}>
+                {message.role === "user" ? <UserChatBubble message={message} /> : <AIChatBubble message={message} />}
+                <div ref={messagesEndRef} />
+              </React.Fragment>
+            );
+          })}
+          {status === "submitted" && (
+            <div className="my-4 flex justify-center">
+              <LoaderPinwheel className="h-6 w-6 animate-spin text-slate-500" />
+            </div>
+          )}
         </div>
-      )}
-
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          if (!input.trim()) return;
-          await sendUserMessage(input);
-        }}
-      >
-        <div className="fixed bottom-0 mb-8 flex h-fit w-full max-w-[800px] items-center rounded-2xl border-2 border-zinc-300 bg-white px-4 py-2 shadow-2xs after:absolute after:-bottom-[34px] after:left-0 after:h-8 after:w-full after:bg-white dark:border-zinc-800 dark:bg-zinc-900">
-          <Textarea
-            className="resize-none border-none shadow-none"
-            value={input}
-            placeholder="Say something..."
-            onChange={(e) => setInput(e.currentTarget.value)}
-            onKeyDown={onEnterPress}
-          />
-          <div className="flex justify-end pl-2">
-            <Button
-              variant={"secondary"}
-              size={"icon"}
-              className="hover:bg-primary cursor-pointer rounded-full text-zinc-600 transition-colors hover:text-white"
-              type="submit"
-            >
-              <Send />
-            </Button>
+      </div>
+      <div className="flex w-full items-center justify-center bg-white">
+        <form
+          className="w-full max-w-[900px] flex-1"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!input.trim()) return;
+            await sendUserMessage(input);
+          }}
+        >
+          <div className="mb-8 flex h-fit items-center rounded-2xl border-2 border-zinc-300 bg-white px-4 py-2 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+            <Textarea
+              className="resize-none border-none shadow-none focus-visible:border-none focus-visible:ring-0"
+              value={input}
+              placeholder="Say something..."
+              onChange={(e) => setInput(e.currentTarget.value)}
+              onKeyDown={onEnterPress}
+            />
+            <div className="flex justify-end pl-2">
+              <Button
+                variant={"secondary"}
+                size={"icon"}
+                className="hover:bg-primary cursor-pointer rounded-full text-zinc-600 transition-colors hover:text-white"
+                type="submit"
+              >
+                <Send />
+              </Button>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 }

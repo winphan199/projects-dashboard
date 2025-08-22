@@ -19,14 +19,27 @@ type params = Promise<{
 async function ChatbotPage({ params }: { params: params }) {
   const supabase = getSupabaseServerClient();
   const { chatId } = await params;
-  const { data, error } = await supabase.from("messages").select().eq("chat_id", chatId);
+  const fetchMessages = () => {
+    const response = supabase.from("messages").select().eq("chat_id", chatId);
+    return response;
+  };
+  const fetchChat = () => {
+    const response = supabase.from("chats").select().eq("id", chatId);
+    return response;
+  };
+  const [messages, chat] = await Promise.all([fetchMessages(), fetchChat()]);
 
-  if (error) {
-    console.error("Error fetching messages:", error);
+  if (messages.error) {
+    console.error("Error fetching messages:", messages.error);
     return null;
   }
 
-  if (data.length === 0) {
+  if (chat.error) {
+    console.error("Error fetching chat:", chat.error);
+    return null;
+  }
+
+  if (messages.data.length === 0) {
     console.warn("No messages found for chat:", chatId);
     return notFound();
   }
@@ -50,10 +63,10 @@ async function ChatbotPage({ params }: { params: params }) {
     return uiMessages;
   };
 
-  const messages = convertToUIMessages(data);
+  const displayedMessages = convertToUIMessages(messages.data);
 
   return (
-    <AIChatbotProvider>
+    <AIChatbotProvider model={chat.data[0]?.model}>
       <div className="flex h-full flex-1 flex-col overflow-auto">
         <SidebarProvider>
           <AppSidebar />
@@ -66,8 +79,8 @@ async function ChatbotPage({ params }: { params: params }) {
               </div>
               <AIModelSelector />
             </header>
-            <main className="flex flex-1 flex-col items-center overflow-auto">
-              <ChatWrapper defaultChatId={chatId} defaultMessages={messages} />
+            <main className="relative flex flex-1 flex-col items-center overflow-auto">
+              <ChatWrapper defaultChatId={chatId} defaultMessages={displayedMessages} />
             </main>
           </div>
         </SidebarProvider>

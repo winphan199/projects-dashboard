@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -14,6 +14,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useSupabaseBrowser from "@/lib/supabase/client";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -24,7 +26,7 @@ const FormSchema = z.object({
 export function LoginForm() {
   const router = useRouter();
   const supabase = useSupabaseBrowser();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -36,24 +38,22 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    setIsLoading(true);
-
-    const { email, password } = data;
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      toast.success("Login successful!");
-      router.push("/dashboard");
-    } catch (error: unknown) {
-      toast.error(error instanceof Error ? error.message : "An error occurred during login.");
-      console.error(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
+    startTransition(async () => {
+      const { email, password } = data;
+      try {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+        // Update this route to redirect to an authenticated route. The user already has an active session.
+        toast.success("Login successful!");
+        router.push("/dashboard");
+      } catch (error: unknown) {
+        toast.error(error instanceof Error ? error.message : "An error occurred during login.");
+        console.error(error instanceof Error ? error.message : "An error occurred");
+      }
+    });
   };
 
   return (
@@ -91,27 +91,9 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="remember"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center">
-              <FormControl>
-                <Checkbox
-                  id="login-remember"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="size-4"
-                />
-              </FormControl>
-              <FormLabel htmlFor="login-remember" className="text-muted-foreground ml-1 text-sm font-medium">
-                Remember me for 30 days
-              </FormLabel>
-            </FormItem>
-          )}
-        />
+
         <Button className="w-full" type="submit" disabled={isLoading || !form.formState.isValid}>
-          Login
+          {isLoading ? <Loader2 size={12} className={cn("animate-spin")} /> : <span>Login</span>}
         </Button>
       </form>
     </Form>

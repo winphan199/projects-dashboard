@@ -1,4 +1,5 @@
 import { UIMessage } from "@ai-sdk/react";
+import { MemoizedMarkdown } from "./memoized-markdown";
 
 interface AIChatBubbleProps {
   message: UIMessage;
@@ -6,15 +7,11 @@ interface AIChatBubbleProps {
 
 function AIChatBubble({ message }: AIChatBubbleProps) {
   return (
-    <div className="self-start px-4 py-3">
+    <div className="max-w-[80%] self-start rounded-xl rounded-tl-sm bg-slate-500 px-4 py-3 text-white/90">
       {message.parts.map((part, i) => {
         switch (part.type) {
           case "text":
-            return (
-              <div key={`${message.id}-${i}`} className="text-base">
-                {part.text}
-              </div>
-            );
+            return <MemoizedMarkdown key={`${message.id}-${i}`} id={message.id} content={part.text} />;
         }
       })}
     </div>

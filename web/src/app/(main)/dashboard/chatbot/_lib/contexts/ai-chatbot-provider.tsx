@@ -15,12 +15,18 @@ export const AIChatbotContext = createContext<{
   selectedModel: "",
   setSelectedModel: () => undefined,
 });
-function AIChatbotProvider({ children }: { children: React.ReactNode }) {
+
+interface AIChatbotProviderProps extends React.PropsWithChildren {
+  model?: string;
+}
+
+function AIChatbotProvider({ children, model }: AIChatbotProviderProps) {
   const { chatId } = useParams<{
     chatId: string | undefined;
   }>();
   const supabase = useSupabaseBrowser();
-  const [selectedModel, setSelectedModel] = useState<string>(anthropicModels[0]!.value);
+
+  const [selectedModel, setSelectedModel] = useState<string>(model ?? anthropicModels[0]!.value);
   const updateAIModel = async (model: string) => {
     if (chatId) {
       await supabase.from("chats").update({ model }).eq("id", chatId);
@@ -28,7 +34,7 @@ function AIChatbotProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (chatId) {
+    if (chatId && selectedModel !== model) {
       updateAIModel(selectedModel);
     }
   }, [selectedModel]);
